@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listes des artistes{% endblock %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Firstname</th>
+                <th>Lastname</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for artist in artists %}
+                <tr>
+                    <td>{{ artist.firstname }}</td>
+                    <td><a href="{{ path( 'app_artist_show', {id: artist.id}) }}">{{ artist.lastname }}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
