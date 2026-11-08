@@ -1,0 +1,18 @@
+{{ form_start(form, { 'method': http_method|default('POST') }) }}
+        {% if not form.vars.valid %}
+        <div class="errors">
+             {{ form_errors(form) }}
+        </div>
+        {% endif %}
+
+    <div>
+        {{ form_label(form.firstname, 'Prénom') }} {{ form_widget(form.firstname) }}
+        {{ form_help(form.firstname) }}
+    </div>
+    <div>
+        {{ form_label(form.lastname, 'Nom') }} {{ form_widget(form.lastname) }}
+        {{ form_help(form.lastname) }}
+    </div>
+    {{ form_row(form.save, { 'label': button_label|default('Ajouter') }) }}
+
+{{ form_end(form) }}
