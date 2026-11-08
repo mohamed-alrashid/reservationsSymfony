@@ -45,6 +45,17 @@ final class ArtistController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}', name: 'artist_delete', methods:['POST','DELETE'])]
+    public function delete(Request $request, Artist $artist, EntityManagerInterface $em): Response
+    {
+        if($this->isCsrfTokenValid('delete'.$artist->getId(), $request->request->get('_token'))){
+            $em->remove($artist);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_artist_index',[], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/{id}', name:'app_artist_show', methods: ['GET'])]
     public function show(Artist $artist, ArtistRepository $respository) : Response
     {

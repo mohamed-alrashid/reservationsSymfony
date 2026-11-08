@@ -8,6 +8,8 @@
     <div>
         <a href="{{ path('artist_edit', {'id': artist.id}) }}">Modifier</a>
     </div>
+
+    {{ include('artist/_delete_form.html.twig') }}
     <nav>
         <a href="{{ path('app_artist_index') }}">Retour à pages des artistes</a>
     </nav>
