@@ -25,6 +25,26 @@ final class ArtistController extends AbstractController
         ]);
     }
 
+    #[Route('/new', name: 'artist_new', methods:['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $em): Response
+    {
+        $artist = new Artist();
+        $form = $this->createForm(ArtistType::class, $artist);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em->persist($artist);
+            $em->flush();
+
+            return $this->redirectToRoute('app_artist_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('artist/new.html.twig', [
+            'artist' => $artist,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name:'app_artist_show', methods: ['GET'])]
     public function show(Artist $artist, ArtistRepository $respository) : Response
     {
@@ -37,17 +57,15 @@ final class ArtistController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'artist_edit', methods: ['GET','POST','PUT'])]
-    public function edit(Request $request, Artist $artist, ArtistRepository $artistRepository, EntityManagerInterface $em): Response
+    public function edit(Request $request, Artist $artist, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(ArtistType::class, $artist);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Sauvegarde les changements en base de données
-            $artistRepository->getEntityManager()->flush();
+            $em->flush();
             
-            // Redirige vers la liste pour voir le changement
             return $this->redirectToRoute('app_artist_index',[],Response::HTTP_SEE_OTHER);
         }
 
@@ -56,4 +74,6 @@ final class ArtistController extends AbstractController
             'form' => $form,
         ]);
     } 
+
+
 }
