@@ -14,27 +14,24 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/artist')]
 final class ArtistController extends AbstractController
 {
-    #[Route('/', name: 'app_artist_index', methods: ['GET'])]
+    #[Route(name: 'app_artist_index', methods: ['GET'])]
     public function index(ArtistRepository $artistRepository): Response
     {
-        $artists = $artistRepository->findAll();
-
         return $this->render('artist/index.html.twig', [
-            'artists' => $artists,
-            'title' => 'Liste des artistes',
+            'artists' => $artistRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'artist_new', methods:['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    #[Route('/new', name: 'app_artist_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $artist = new Artist();
         $form = $this->createForm(ArtistType::class, $artist);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $em->persist($artist);
-            $em->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($artist);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_artist_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -45,46 +42,40 @@ final class ArtistController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'artist_delete', methods:['POST','DELETE'])]
-    public function delete(Request $request, Artist $artist, EntityManagerInterface $em): Response
+    #[Route('/{id}', name: 'app_artist_show', methods: ['GET'])]
+    public function show(Artist $artist): Response
     {
-        if($this->isCsrfTokenValid('delete'.$artist->getId(), $request->request->get('_token'))){
-            $em->remove($artist);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('app_artist_index',[], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('/{id}', name:'app_artist_show', methods: ['GET'])]
-    public function show(Artist $artist, ArtistRepository $respository) : Response
-    {
-        $artist = $respository->find($artist);
-
         return $this->render('artist/show.html.twig', [
             'artist' => $artist,
-            'title' => "Fiche d'un artiste",
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'artist_edit', methods: ['GET','POST','PUT'])]
-    public function edit(Request $request, Artist $artist, EntityManagerInterface $em): Response
+    #[Route('/{id}/edit', name: 'app_artist_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Artist $artist, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ArtistType::class, $artist);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-            
-            return $this->redirectToRoute('app_artist_index',[],Response::HTTP_SEE_OTHER);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_artist_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('artist/edit.html.twig', [
             'artist' => $artist,
             'form' => $form,
         ]);
-    } 
+    }
 
+    #[Route('/{id}', name: 'app_artist_delete', methods: ['POST'])]
+    public function delete(Request $request, Artist $artist, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$artist->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($artist);
+            $entityManager->flush();
+        }
 
+        return $this->redirectToRoute('app_artist_index', [], Response::HTTP_SEE_OTHER);
+    }
 }

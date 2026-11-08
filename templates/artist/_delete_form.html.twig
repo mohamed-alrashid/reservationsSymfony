@@ -1,5 +1,4 @@
-<form method="POST" action="{{ path('artist_delete', {'id': artist.id}) }}" onsubmit="return confirm('VOUS ETES SUR DE SUPPRIMERE');">
-    <input type="hidden" name="_method" value="DELETE">
+<form method="post" action="{{ path('app_artist_delete', {'id': artist.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ artist.id) }}">
-    <button class="btn" type="submit">Spprimer</button>
+    <button class="btn">Delete</button>
 </form>
