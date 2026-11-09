@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des types{% endblock %}
+
+{% block body %}
+    <h2>Liste des types d'artistes</h2>
+
+    <ul>
+        {% for t in types %}
+            <li>
+                <a href="{{ path('app_type_show', {'id': t.id }) }}">{{ t.type }}</a>
+            </li>
+        
+        {% else %}
+            <li>Aucun type trouvé</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

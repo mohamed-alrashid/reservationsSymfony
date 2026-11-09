@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des loclaités{% endblock %}
+
+{% block body %}
+    <h2>Liste des localités</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Code Postal</th>
+                <th>Adresse</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for locality in localities %}
+                <tr>
+                    <td>{{ locality.postalCode }}</td>
+                    <td>{{ locality.localityName }}</td>
+                    <td><a href="{{ path('app_locality_show', {'id': locality.id}) }}">Détailes</a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>Aucune localité trouvée en base de données</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Roles{% endblock %}
+
+{% block body %}
+    <h2>Role : {{ r.role }}</h2>
+    <p>ID: {{ r.id }}</p>
+
+    <nav>
+        <a href="{{ path('app_type') }}">Retour à la liste des types</a>
+    </nav>
+    
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Adresses{% endblock %}
+
+{% block body %}
+    <h2>Localité: {{ locality.localityName }}</h2>
+    <p>Code Postal: {{ locality.postalCode }}</p>
+    <p>ID: {{ locality.id }}</p>
+    <nav>
+        <a href="{{ path('app_locality') }}">Retour à la liste des adresses</a>
+    </nav>
+    
+{% endblock %}
+

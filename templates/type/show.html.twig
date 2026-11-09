@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des types{% endblock %}
+
+{% block body %}
+    <h2>Type : {{ t.type }}</h2>
+    <p>ID: {{ t.id }}</p>
+
+    <nav>
+        <a href="{{ path('app_type') }}">Retour à la liste des types</a>
+    </nav>
+    
+{% endblock %}
