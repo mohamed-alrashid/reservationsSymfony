@@ -10,6 +10,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class TypeController extends AbstractController
 {
+    /**
+     * @Route("/type", name="app_type")
+     */
     #[Route('/type', name: 'app_type')]
     public function index(TypeRepository $typeRepository): Response
     {
@@ -19,6 +22,9 @@ final class TypeController extends AbstractController
             'types' => $types,
         ]);
     }
+    /**
+     * @Route("/type/{id}", name="app_type_show")
+     */
 
     #[Route('/type/{id}', name: 'app_type_show', methods: ['GET'])]
     public function show(Type $type): Response
